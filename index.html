@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labor Wage Tracking System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="title-section">
+                    <h1 data-lang-key="title">🌾 Labor Wage Tracking System</h1>
+                    <p data-lang-key="subtitle">Agricultural Work Management</p>
+                </div>
+                <div class="language-toggle">
+                    <button id="langToggle" onclick="laborSystem.toggleLanguage()">
+                        <span id="langIcon">🇮🇳</span>
+                        <span id="langText">ಕನ್ನಡ</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="controls">
+            <div class="filter-section">
+                <label for="laborerFilter" data-lang-key="filterByLaborer">Filter by Laborer:</label>
+                <select id="laborerFilter">
+                    <option value="" data-lang-key="allLaborers">All Laborers</option>
+                </select>
+            </div>
+            
+            
+            
+            <div class="summary-section">
+                <div class="summary-card" onclick="laborSystem.showOutstandingDetails()">
+                    <h3 data-lang-key="totalOutstanding">Total Outstanding</h3>
+                    <span id="totalOutstanding">₹0</span>
+                </div>
+                <div class="summary-card" onclick="laborSystem.showAdvancesDetails()">
+                    <h3 data-lang-key="totalAdvances">Total Advances</h3>
+                    <span id="totalAdvances">₹0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-work-section">
+            <h3 data-lang-key="manageWorkTypes">🔧 Manage Work Types</h3>
+            <div class="work-management">
+                <div class="work-input-group">
+                    <label for="newCategory" data-lang-key="category">Category:</label>
+                    <select id="newCategory">
+                        <option value="" data-lang-key="selectCategory">Select Category</option>
+                        <option value="Arecanut" data-lang-key="arecanut">Arecanut</option>
+                        <option value="Rice" data-lang-key="rice">Rice</option>
+                        <option value="Ginger" data-lang-key="ginger">Ginger</option>
+                        <option value="House Work" data-lang-key="houseWork">House Work</option>
+                        <option value="Maintenance" data-lang-key="maintenance">Maintenance</option>
+                        <option value="new" data-lang-key="addNewCategory">+ Add New Category</option>
+                    </select>
+                </div>
+                <div class="work-input-group">
+                    <label for="newCategoryName" data-lang-key="newCategoryName">New Category Name:</label>
+                    <input type="text" id="newCategoryName" data-lang-key="enterNewCategory" placeholder="Enter new category" style="display: none;">
+                </div>
+                <div class="work-input-group">
+                    <label for="newWorkType" data-lang-key="workType">Work Type:</label>
+                    <input type="text" id="newWorkType" data-lang-key="workTypePlaceholder" placeholder="e.g., Pruning, Fertilizing">
+                </div>
+                <button type="button" class="add-work-btn" onclick="laborSystem.addCustomWork()">
+                    <span data-lang-key="addWorkType">➕ Add Work Type</span>
+                </button>
+            </div>
+            <div class="work-tags" id="workTags"></div>
+        </div>
+
+        <div class="form-section">
+            <h2 data-lang-key="addNewEntry">Add New Entry</h2>
+            <form id="entryForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date" data-lang-key="date">Date:</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="laborerName" data-lang-key="laborerName">Laborer Name:</label>
+                        <input type="text" id="laborerName" list="laborerList" required>
+                        <datalist id="laborerList">
+                            <!-- Laborer names will be populated dynamically -->
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskCategory" data-lang-key="taskCategory">Task Category:</label>
+                        <select id="taskCategory" required>
+                            <option value="" data-lang-key="selectCategory">Select Category</option>
+                            <option value="Arecanut" data-lang-key="arecanut">Arecanut</option>
+                            <option value="Rice" data-lang-key="rice">Rice</option>
+                            <option value="Ginger" data-lang-key="ginger">Ginger</option>
+                            <option value="House Work" data-lang-key="houseWork">House Work</option>
+                            <option value="Maintenance" data-lang-key="maintenance">Maintenance</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskDetail" data-lang-key="taskDetail">Task Detail:</label>
+                        <select id="taskDetail" required>
+                            <option value="" data-lang-key="selectTask">Select Task</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="unitType" data-lang-key="unitType">Unit Type:</label>
+                        <select id="unitType" required>
+                            <option value="" data-lang-key="selectUnit">Select Unit</option>
+                            <option value="Day" data-lang-key="day">Day</option>
+                            <option value="Hour" data-lang-key="hour">Hour</option>
+                            <option value="Kg" data-lang-key="kg">Kg</option>
+                            <option value="Quintal" data-lang-key="quintal">Quintal</option>
+                            <option value="Tree" data-lang-key="tree">Tree</option>
+                            <option value="Piece" data-lang-key="piece">Piece</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity" data-lang-key="quantity">Quantity:</label>
+                        <input type="number" id="quantity" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rate" data-lang-key="ratePerUnit">Rate per Unit (₹):</label>
+                        <input type="number" id="rate" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amountPaid" data-lang-key="amountPaidToday">Amount Paid Today (₹):</label>
+                        <input type="number" id="amountPaid" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks" data-lang-key="remarks">Remarks:</label>
+                        <div class="remarks-container">
+                            <select id="remarksDropdown" onchange="laborSystem.handleRemarksChange()">
+                                <option value="" data-lang-key="selectRemarks">Select Remarks</option>
+                                <option value="Full payment" data-lang-key="fullPayment">Full payment</option>
+                                <option value="Partial payment" data-lang-key="partialPayment">Partial payment</option>
+                                <option value="To be paid" data-lang-key="toBePaid">To be paid</option>
+                                <option value="Repayment after 2 days" data-lang-key="repayment2Days">Repayment after 2 days</option>
+                                <option value="Repayment after 4 days" data-lang-key="repayment4Days">Repayment after 4 days</option>
+                                <option value="Repayment after 1 week" data-lang-key="repayment1Week">Repayment after 1 week</option>
+                                <option value="Repayment after 2 weeks" data-lang-key="repayment2Weeks">Repayment after 2 weeks</option>
+                                <option value="Repayment next month" data-lang-key="repaymentNextMonth">Repayment next month</option>
+                                <option value="Advance given" data-lang-key="advanceGiven">Advance given</option>
+                                <option value="Emergency payment" data-lang-key="emergencyPayment">Emergency payment</option>
+                                <option value="Bonus payment" data-lang-key="bonusPayment">Bonus payment</option>
+                                <option value="Festival advance" data-lang-key="festivalAdvance">Festival advance</option>
+                                <option value="Medical advance" data-lang-key="medicalAdvance">Medical advance</option>
+                                <option value="Work completed" data-lang-key="workCompleted">Work completed</option>
+                                <option value="Half day work" data-lang-key="halfDayWork">Half day work</option>
+                                <option value="Overtime payment" data-lang-key="overtimePayment">Overtime payment</option>
+                                <option value="custom" data-lang-key="customRemarks">Custom remarks...</option>
+                            </select>
+                            <input type="text" id="remarks" data-lang-key="optionalNotes" placeholder="Optional notes" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" data-lang-key="addEntry">Add Entry</button>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2 data-lang-key="workRecords">Work Records</h2>
+            <div class="table-container">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th data-lang-key="date">Date</th>
+                            <th data-lang-key="laborer">Laborer</th>
+                            <th data-lang-key="taskCategory">Task Category</th>
+                            <th data-lang-key="taskDetail">Task Detail</th>
+                            <th data-lang-key="unit">Unit</th>
+                            <th data-lang-key="qty">Qty</th>
+                            <th data-lang-key="rate">Rate</th>
+                            <th data-lang-key="earned">Earned</th>
+                            <th data-lang-key="paid">Paid</th>
+                            <th data-lang-key="balance">Balance</th>
+                            <th data-lang-key="status">Status</th>
+                            <th data-lang-key="remarks">Remarks</th>
+                            <th data-lang-key="action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="laborer-summary">
+            <h2 data-lang-key="laborerSummary">Laborer Summary</h2>
+            <div id="summaryCards"></div>
+        </div>
+    </div>
+
+    <!-- Modal for Outstanding Details -->
+    <div id="outstandingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-lang-key="outstandingPayments">💰 Outstanding Payments</h2>
+                <span class="close" onclick="laborSystem.closeModal('outstandingModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="outstandingList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Advances Details -->
+    <div id="advancesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-lang-key="advancePayments">🏦 Advance Payments</h2>
+                <span class="close" onclick="laborSystem.closeModal('advancesModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="advancesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
