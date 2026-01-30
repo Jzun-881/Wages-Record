@@ -47,6 +47,7 @@ class LaborTrackingSystem {
         };
         
         this.currentLanguage = localStorage.getItem('currentLanguage') || 'en';
+        this.autoSyncEnabled = localStorage.getItem('autoSyncEnabled') === 'true';
         this.translations = {
             en: {
                 title: "🌾 Labor Wage Tracking System",
@@ -131,6 +132,24 @@ class LaborTrackingSystem {
                 halfDayWork: "Half day work",
                 overtimePayment: "Overtime payment",
                 translationTip: "New categories and tasks will use the same name in both languages initially. You can edit translations by clicking on the work tags below.",
+                dataManagement: "📊 Data Management",
+                exportWorkTypes: "📤 Export Work Types",
+                importWorkTypes: "📥 Import Work Types",
+                exportAllData: "📋 Export All Records",
+                downloadTemplate: "📋 Download Template",
+                instructions: "Instructions:",
+                instruction1: "📤 Export: Download current work types to Excel file",
+                instruction2: "📋 Template: Download sample Excel format",
+                instruction3: "📥 Import: Upload Excel file to add new work types",
+                instruction4: "📋 Records: Export all work records to Excel",
+                instruction5: "🔄 CSV Sync: Import/Export in Labor_Tracking_Template.csv format",
+                instruction6: "⚡ Auto-Sync: Automatically export after each entry when enabled",
+                syncWithCSV: "🔄 Sync with CSV",
+                csvSync: "📁 CSV File Sync",
+                importCSVRecords: "📥 Import CSV Records",
+                exportCSVFormat: "💾 Export CSV Format",
+                enableAutoSync: "⚡ Enable Auto-Sync",
+                disableAutoSync: "⚡ Disable Auto-Sync",
                 selectRemarks: "Select Remarks",
                 fullPayment: "Full payment",
                 partialPayment: "Partial payment",
@@ -253,6 +272,24 @@ class LaborTrackingSystem {
                 halfDayWork: "ಅರ್ಧ ದಿನದ ಕೆಲಸ",
                 overtimePayment: "ಹೆಚ್ಚುವರಿ ಸಮಯದ ಪಾವತಿ",
                 translationTip: "ಹೊಸ ವರ್ಗಗಳು ಮತ್ತು ಕೆಲಸಗಳು ಆರಂಭದಲ್ಲಿ ಎರಡೂ ಭಾಷೆಗಳಲ್ಲಿ ಒಂದೇ ಹೆಸರನ್ನು ಬಳಸುತ್ತವೆ. ಕೆಳಗಿನ ಕೆಲಸದ ಟ್ಯಾಗ್‌ಗಳನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ ನೀವು ಅನುವಾದಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
+                dataManagement: "📊 ಡೇಟಾ ನಿರ್ವಹಣೆ",
+                exportWorkTypes: "📤 ಕೆಲಸದ ಪ್ರಕಾರಗಳನ್ನು ರಫ್ತು ಮಾಡಿ",
+                importWorkTypes: "📥 ಕೆಲಸದ ಪ್ರಕಾರಗಳನ್ನು ಆಮದು ಮಾಡಿ",
+                exportAllData: "📋 ಎಲ್ಲಾ ದಾಖಲೆಗಳನ್ನು ರಫ್ತು ಮಾಡಿ",
+                downloadTemplate: "📋 ಟೆಂಪ್ಲೇಟ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+                instructions: "ಸೂಚನೆಗಳು:",
+                instruction1: "📤 ರಫ್ತು: ಪ್ರಸ್ತುತ ಕೆಲಸದ ಪ್ರಕಾರಗಳನ್ನು ಎಕ್ಸೆಲ್ ಫೈಲ್‌ಗೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+                instruction2: "📋 ಟೆಂಪ್ಲೇಟ್: ಮಾದರಿ ಎಕ್ಸೆಲ್ ಫಾರ್ಮ್ಯಾಟ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+                instruction3: "📥 ಆಮದು: ಹೊಸ ಕೆಲಸದ ಪ್ರಕಾರಗಳನ್ನು ಸೇರಿಸಲು ಎಕ್ಸೆಲ್ ಫೈಲ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+                instruction4: "📋 ದಾಖಲೆಗಳು: ಎಲ್ಲಾ ಕೆಲಸದ ದಾಖಲೆಗಳನ್ನು ಎಕ್ಸೆಲ್‌ಗೆ ರಫ್ತು ಮಾಡಿ",
+                instruction5: "🔄 CSV ಸಿಂಕ್: Labor_Tracking_Template.csv ಫಾರ್ಮ್ಯಾಟ್‌ನಲ್ಲಿ ಆಮದು/ರಫ್ತು",
+                instruction6: "⚡ ಆಟೋ-ಸಿಂಕ್: ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಪ್ರತಿ ನಮೂದಿನ ನಂತರ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರಫ್ತು ಮಾಡಿ",
+                syncWithCSV: "🔄 CSV ನೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಿ",
+                csvSync: "📁 CSV ಫೈಲ್ ಸಿಂಕ್",
+                importCSVRecords: "📥 CSV ದಾಖಲೆಗಳನ್ನು ಆಮದು ಮಾಡಿ",
+                exportCSVFormat: "💾 CSV ಫಾರ್ಮ್ಯಾಟ್ ರಫ್ತು ಮಾಡಿ",
+                enableAutoSync: "⚡ ಆಟೋ-ಸಿಂಕ್ ಸಕ್ರಿಯಗೊಳಿಸಿ",
+                disableAutoSync: "⚡ ಆಟೋ-ಸಿಂಕ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ",
                 selectRemarks: "ಟಿಪ್ಪಣಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
                 fullPayment: "ಪೂರ್ಣ ಪಾವತಿ",
                 partialPayment: "ಭಾಗಶಃ ಪಾವತಿ",
@@ -286,6 +323,9 @@ class LaborTrackingSystem {
         
         // Set today's date as default
         document.getElementById('date').valueAsDate = new Date();
+        
+        // Initialize auto-sync button state
+        this.updateAutoSyncButton();
         
         // Add entrance animations
         this.addEntranceAnimations();
@@ -666,6 +706,9 @@ class LaborTrackingSystem {
         // Update work tags display
         this.renderWorkTags();
         
+        // Update auto-sync button
+        this.updateAutoSyncButton();
+        
         // Update table headers and content
         this.renderRecords();
         this.updateLaborerSummary();
@@ -723,6 +766,349 @@ class LaborTrackingSystem {
 
     getTranslation(key) {
         return this.translations[this.currentLanguage][key] || key;
+    }
+
+    exportWorkTypes() {
+        // Create CSV content for work types
+        let csvContent = "Category,Task,Category_English,Category_Kannada,Task_English,Task_Kannada\n";
+        
+        Object.entries(this.taskDetails).forEach(([category, tasks]) => {
+            tasks.forEach(task => {
+                const categoryEn = this.categoryTranslations[category]?.en || category;
+                const categoryKn = this.categoryTranslations[category]?.kn || category;
+                const taskEn = this.taskTranslations[task]?.en || task;
+                const taskKn = this.taskTranslations[task]?.kn || task;
+                
+                csvContent += `"${category}","${task}","${categoryEn}","${categoryKn}","${taskEn}","${taskKn}"\n`;
+            });
+        });
+        
+        // Create and download file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `work_types_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showSuccess(this.getTranslation('exportWorkTypes') + ' completed successfully!');
+    }
+
+    importWorkTypes(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const csv = e.target.result;
+                const lines = csv.split('\n');
+                const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                
+                // Validate headers
+                const expectedHeaders = ['Category', 'Task', 'Category_English', 'Category_Kannada', 'Task_English', 'Task_Kannada'];
+                const hasValidHeaders = expectedHeaders.every(header => headers.includes(header));
+                
+                if (!hasValidHeaders) {
+                    this.showError('Invalid file format. Please use the exported work types file format.');
+                    return;
+                }
+                
+                // Clear existing data
+                this.taskDetails = {};
+                this.categoryTranslations = {};
+                this.taskTranslations = {};
+                
+                // Parse data
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const values = this.parseCSVLine(line);
+                    if (values.length >= 6) {
+                        const [category, task, categoryEn, categoryKn, taskEn, taskKn] = values;
+                        
+                        // Add to taskDetails
+                        if (!this.taskDetails[category]) {
+                            this.taskDetails[category] = [];
+                        }
+                        if (!this.taskDetails[category].includes(task)) {
+                            this.taskDetails[category].push(task);
+                        }
+                        
+                        // Add translations
+                        this.categoryTranslations[category] = {
+                            en: categoryEn || category,
+                            kn: categoryKn || category
+                        };
+                        
+                        this.taskTranslations[task] = {
+                            en: taskEn || task,
+                            kn: taskKn || task
+                        };
+                    }
+                }
+                
+                // Save and update UI
+                this.saveTaskDetails();
+                this.saveCategoryTranslations();
+                this.saveTaskTranslations();
+                this.renderWorkTags();
+                this.updateTaskCategoryOptions();
+                
+                this.showSuccess(`${this.getTranslation('importWorkTypes')} completed successfully!`);
+                
+            } catch (error) {
+                console.error('Import error:', error);
+                this.showError('Error importing file. Please check the file format.');
+            }
+        };
+        
+        reader.readAsText(file);
+        // Reset file input
+        event.target.value = '';
+    }
+
+    parseCSVLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                result.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        
+        result.push(current.trim());
+        return result;
+    }
+
+    exportAllData() {
+        // Create CSV content for all records
+        let csvContent = "Date,Laborer_Name,Task_Category,Task_Detail,Unit_Type,Quantity,Rate_per_Unit,Total_Earned,Amount_Paid,Balance_Change,Running_Balance,Payment_Status,Remarks\n";
+        
+        this.records.forEach((record, index) => {
+            const runningBalance = this.calculateRunningBalance(record.laborerName, index);
+            const status = this.getPaymentStatus(runningBalance);
+            
+            csvContent += `"${record.date}","${record.laborerName}","${record.taskCategory}","${record.taskDetail}","${record.unitType}",${record.quantity},${record.rate},${record.totalEarned},${record.amountPaid},${record.balanceChange},${runningBalance},"${status}","${record.remarks || ''}"\n`;
+        });
+        
+        // Create and download file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `labor_records_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showSuccess(this.getTranslation('exportAllData') + ' completed successfully!');
+    }
+
+    downloadTemplate() {
+        // Create template CSV content
+        const templateContent = `Category,Task,Category_English,Category_Kannada,Task_English,Task_Kannada
+"Arecanut","Tree Cutting","Arecanut","ಅಡಿಕೆ","Tree Cutting","ಮರ ಕತ್ತರಿಸುವುದು"
+"Arecanut","Husking","Arecanut","ಅಡಿಕೆ","Husking","ಸಿಪ್ಪೆ ಸುಲಿಯುವುದು"
+"Arecanut","Spraying","Arecanut","ಅಡಿಕೆ","Spraying","ಸಿಂಪಣೆ ಮಾಡುವುದು"
+"Rice","Planting","Rice","ಅಕ್ಕಿ","Planting","ನೆಟ್ಟಿಗೆ"
+"Rice","Weeding","Rice","ಅಕ್ಕಿ","Weeding","ಕಳೆ ತೆಗೆಯುವುದು"
+"Ginger","Planting","Ginger","ಶುಂಠಿ","Planting","ನೆಟ್ಟಿಗೆ"
+"House Work","Cleaning","House Work","ಮನೆ ಕೆಲಸ","Cleaning","ಸ್ವಚ್ಛಗೊಳಿಸುವುದು"
+"Maintenance","Grass Picking","Maintenance","ನಿರ್ವಹಣೆ","Grass Picking","ಹುಲ್ಲು ಕೀಳುವುದು"`;
+        
+        // Create and download file
+        const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'work_types_template.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showSuccess(this.getTranslation('downloadTemplate') + ' completed successfully!');
+    }
+
+    syncWithCSV() {
+        // This method guides users to sync with local CSV
+        const message = this.currentLanguage === 'en' 
+            ? 'To sync with your local CSV file:\n1. Click "Import CSV Records" to load existing data\n2. Add new entries in the web app\n3. Click "Export CSV Format" to download updated file\n4. Replace your local CSV file with the downloaded file'
+            : 'ನಿಮ್ಮ ಸ್ಥಳೀಯ CSV ಫೈಲ್‌ನೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು:\n1. ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಡೇಟಾವನ್ನು ಲೋಡ್ ಮಾಡಲು "CSV ದಾಖಲೆಗಳನ್ನು ಆಮದು ಮಾಡಿ" ಕ್ಲಿಕ್ ಮಾಡಿ\n2. ವೆಬ್ ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿ ಹೊಸ ನಮೂದುಗಳನ್ನು ಸೇರಿಸಿ\n3. ನವೀಕರಿಸಿದ ಫೈಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು "CSV ಫಾರ್ಮ್ಯಾಟ್ ರಫ್ತು ಮಾಡಿ" ಕ್ಲಿಕ್ ಮಾಡಿ\n4. ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್‌ನೊಂದಿಗೆ ನಿಮ್ಮ ಸ್ಥಳೀಯ CSV ಫೈಲ್ ಅನ್ನು ಬದಲಾಯಿಸಿ';
+        
+        alert(message);
+    }
+
+    importCSVRecords(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const csv = e.target.result;
+                const lines = csv.split('\n');
+                const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                
+                // Map CSV headers to our internal format
+                const headerMap = {
+                    'Date': 'date',
+                    'Laborer Name': 'laborerName',
+                    'Task Category': 'taskCategory',
+                    'Task Detail': 'taskDetail',
+                    'Unit Type': 'unitType',
+                    'Quantity': 'quantity',
+                    'Rate per Unit': 'rate',
+                    'Total Earned': 'totalEarned',
+                    'Amount Paid': 'amountPaid',
+                    'Balance Change': 'balanceChange',
+                    'Payment Status': 'paymentStatus',
+                    'Remarks': 'remarks'
+                };
+                
+                // Clear existing records
+                this.records = [];
+                
+                // Parse data
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const values = this.parseCSVLine(line);
+                    if (values.length >= headers.length) {
+                        const record = {
+                            id: Date.now() + i, // Generate unique ID
+                        };
+                        
+                        headers.forEach((header, index) => {
+                            const mappedField = headerMap[header];
+                            if (mappedField && values[index]) {
+                                let value = values[index].replace(/"/g, '').trim();
+                                
+                                // Convert numeric fields
+                                if (['quantity', 'rate', 'totalEarned', 'amountPaid', 'balanceChange'].includes(mappedField)) {
+                                    value = parseFloat(value) || 0;
+                                }
+                                
+                                // Convert date format
+                                if (mappedField === 'date') {
+                                    const date = new Date(value);
+                                    value = date.toISOString().split('T')[0];
+                                }
+                                
+                                record[mappedField] = value;
+                            }
+                        });
+                        
+                        // Ensure required fields exist
+                        if (record.date && record.laborerName && record.taskCategory) {
+                            this.records.push(record);
+                        }
+                    }
+                }
+                
+                // Save and update UI
+                this.saveToStorage();
+                this.renderRecords();
+                this.updateSummary();
+                this.updateLaborerFilter();
+                this.updateLaborerSummary();
+                this.updateLaborerDatalist();
+                
+                this.showSuccess(`${this.getTranslation('importCSVRecords')} completed! Imported ${this.records.length} records.`);
+                
+            } catch (error) {
+                console.error('CSV Import error:', error);
+                this.showError('Error importing CSV file. Please check the file format.');
+            }
+        };
+        
+        reader.readAsText(file);
+        // Reset file input
+        event.target.value = '';
+    }
+
+    exportToCSVFormat() {
+        // Create CSV content matching the Labor_Tracking_Template.csv format
+        let csvContent = "Date,Laborer Name,Task Category,Task Detail,Unit Type,Quantity,Rate per Unit,Total Earned,Amount Paid,Balance Change,Running Balance,Payment Status,Remarks\n";
+        
+        this.records.forEach((record, index) => {
+            const runningBalance = this.calculateRunningBalance(record.laborerName, index);
+            const status = this.getPaymentStatus(runningBalance);
+            const formattedDate = new Date(record.date).toLocaleDateString('en-US');
+            
+            csvContent += `${formattedDate},"${record.laborerName}","${record.taskCategory}","${record.taskDetail}","${record.unitType}",${record.quantity},${record.rate},${record.totalEarned},${record.amountPaid},${record.balanceChange},${runningBalance},"${status}","${record.remarks || ''}"\n`;
+        });
+        
+        // Create and download file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'Labor_Tracking_Template.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showSuccess(this.getTranslation('exportCSVFormat') + ' completed successfully!');
+    }
+
+    toggleAutoSync() {
+        this.autoSyncEnabled = !this.autoSyncEnabled;
+        localStorage.setItem('autoSyncEnabled', this.autoSyncEnabled.toString());
+        
+        const button = document.querySelector('.auto-sync-btn');
+        const text = document.getElementById('autoSyncText');
+        
+        if (this.autoSyncEnabled) {
+            button.classList.add('enabled');
+            text.textContent = this.getTranslation('disableAutoSync');
+            this.showSuccess('Auto-sync enabled! Records will be automatically exported after each entry.');
+        } else {
+            button.classList.remove('enabled');
+            text.textContent = this.getTranslation('enableAutoSync');
+            this.showSuccess('Auto-sync disabled.');
+        }
+    }
+
+    autoSyncIfEnabled() {
+        if (this.autoSyncEnabled) {
+            // Auto-export in CSV format
+            setTimeout(() => {
+                this.exportToCSVFormat();
+            }, 1000); // Small delay to ensure UI updates first
+        }
+    }
+
+    updateAutoSyncButton() {
+        const button = document.querySelector('.auto-sync-btn');
+        const text = document.getElementById('autoSyncText');
+        
+        if (button && text) {
+            if (this.autoSyncEnabled) {
+                button.classList.add('enabled');
+                text.textContent = this.getTranslation('disableAutoSync');
+            } else {
+                button.classList.remove('enabled');
+                text.textContent = this.getTranslation('enableAutoSync');
+            }
+        }
     }
 
     getCategoryTranslation(category) {
@@ -866,6 +1252,9 @@ class LaborTrackingSystem {
             setTimeout(() => submitButton.classList.remove('success-animation'), 600);
             
             this.showSuccess('Work record added successfully!');
+            
+            // Auto-sync if enabled
+            this.autoSyncIfEnabled();
         }, 500);
     }
 

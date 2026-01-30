@@ -103,6 +103,106 @@
                 </p>
             </div>
             
+            <!-- Export/Import Section -->
+            <div class="export-import-section">
+                <h4 data-lang-key="dataManagement">📊 Data Management</h4>
+                <div class="export-import-buttons">
+                    <button type="button" 
+                            class="sync-btn" 
+                            onclick="laborSystem.syncWithCSV()"
+                            aria-label="Sync with local CSV file"
+                            title="Load data from local CSV file to sync with existing records">
+                        <span data-lang-key="syncWithCSV">🔄 Sync with CSV</span>
+                    </button>
+                    <button type="button" 
+                            class="export-btn" 
+                            onclick="laborSystem.exportWorkTypes()"
+                            aria-label="Export work types to Excel"
+                            title="Download categories and work types as Excel file">
+                        <span data-lang-key="exportWorkTypes">📤 Export Work Types</span>
+                    </button>
+                    <button type="button" 
+                            class="template-btn" 
+                            onclick="laborSystem.downloadTemplate()"
+                            aria-label="Download template file"
+                            title="Download sample Excel template for work types">
+                        <span data-lang-key="downloadTemplate">📋 Download Template</span>
+                    </button>
+                    <div class="import-container">
+                        <input type="file" 
+                               id="importWorkTypes" 
+                               accept=".csv,.xlsx,.xls" 
+                               onchange="laborSystem.importWorkTypes(event)"
+                               aria-label="Import work types from Excel"
+                               title="Upload Excel file with categories and work types"
+                               class="hidden">
+                        <button type="button" 
+                                class="import-btn" 
+                                onclick="document.getElementById('importWorkTypes').click()"
+                                aria-label="Import work types from Excel"
+                                title="Upload Excel file with categories and work types">
+                            <span data-lang-key="importWorkTypes">📥 Import Work Types</span>
+                        </button>
+                    </div>
+                    <button type="button" 
+                            class="export-btn" 
+                            onclick="laborSystem.exportAllData()"
+                            aria-label="Export all data to Excel"
+                            title="Download complete work records as Excel file">
+                        <span data-lang-key="exportAllData">📋 Export All Records</span>
+                    </button>
+                </div>
+                
+                <!-- CSV Sync Section -->
+                <div class="csv-sync-section">
+                    <h5 data-lang-key="csvSync">📁 CSV File Sync</h5>
+                    <div class="sync-buttons">
+                        <div class="import-container">
+                            <input type="file" 
+                                   id="importCSVRecords" 
+                                   accept=".csv" 
+                                   onchange="laborSystem.importCSVRecords(event)"
+                                   aria-label="Import records from CSV file"
+                                   title="Upload CSV file with labor records"
+                                   class="hidden">
+                            <button type="button" 
+                                    class="import-btn" 
+                                    onclick="document.getElementById('importCSVRecords').click()"
+                                    aria-label="Import records from CSV"
+                                    title="Upload CSV file with labor records">
+                                <span data-lang-key="importCSVRecords">📥 Import CSV Records</span>
+                            </button>
+                        </div>
+                        <button type="button" 
+                                class="sync-btn" 
+                                onclick="laborSystem.exportToCSVFormat()"
+                                aria-label="Export in CSV format"
+                                title="Download records in the same format as Labor_Tracking_Template.csv">
+                            <span data-lang-key="exportCSVFormat">💾 Export CSV Format</span>
+                        </button>
+                        <button type="button" 
+                                class="auto-sync-btn" 
+                                onclick="laborSystem.toggleAutoSync()"
+                                aria-label="Toggle auto-sync"
+                                title="Enable/disable automatic sync with CSV format">
+                            <span id="autoSyncText" data-lang-key="enableAutoSync">⚡ Enable Auto-Sync</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="import-instructions">
+                    <p><strong data-lang-key="instructions">Instructions:</strong></p>
+                    <ul>
+                        <li data-lang-key="instruction1">📤 Export: Download current work types to Excel file</li>
+                        <li data-lang-key="instruction2">📋 Template: Download sample Excel format</li>
+                        <li data-lang-key="instruction3">📥 Import: Upload Excel file to add new work types</li>
+                        <li data-lang-key="instruction4">📋 Records: Export all work records to Excel</li>
+                        <li data-lang-key="instruction5">🔄 CSV Sync: Import/Export in Labor_Tracking_Template.csv format</li>
+                        <li data-lang-key="instruction6">⚡ Auto-Sync: Automatically export after each entry when enabled</li>
+                    </ul>
+                </div>
+            </div>
+            
             <div class="work-tags" id="workTags"></div>
         </div>
 
