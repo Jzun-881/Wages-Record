@@ -15,8 +15,11 @@
                     <p data-lang-key="subtitle">Agricultural Work Management</p>
                 </div>
                 <div class="language-toggle">
-                    <button id="langToggle" onclick="laborSystem.toggleLanguage()">
-                        <span id="langIcon">🇮🇳</span>
+                    <button id="langToggle" 
+                            onclick="laborSystem.toggleLanguage()"
+                            aria-label="Toggle language between English and Kannada"
+                            title="Switch between English and Kannada languages">
+                        <span id="langIcon" aria-hidden="true">🇮🇳</span>
                         <span id="langText">ಕನ್ನಡ</span>
                     </button>
                 </div>
@@ -26,7 +29,9 @@
         <div class="controls">
             <div class="filter-section">
                 <label for="laborerFilter" data-lang-key="filterByLaborer">Filter by Laborer:</label>
-                <select id="laborerFilter">
+                <select id="laborerFilter" 
+                        aria-label="Filter records by laborer name"
+                        title="Filter the work records to show only entries for a specific laborer">
                     <option value="" data-lang-key="allLaborers">All Laborers</option>
                 </select>
             </div>
@@ -50,7 +55,9 @@
             <div class="work-management">
                 <div class="work-input-group">
                     <label for="newCategory" data-lang-key="category">Category:</label>
-                    <select id="newCategory">
+                    <select id="newCategory"
+                            aria-label="Select category for new work type"
+                            title="Choose an existing category or select 'Add New Category' to create a new one">
                         <option value="" data-lang-key="selectCategory">Select Category</option>
                         <option value="Arecanut" data-lang-key="arecanut">Arecanut</option>
                         <option value="Rice" data-lang-key="rice">Rice</option>
@@ -62,16 +69,40 @@
                 </div>
                 <div class="work-input-group">
                     <label for="newCategoryName" data-lang-key="newCategoryName">New Category Name:</label>
-                    <input type="text" id="newCategoryName" data-lang-key="enterNewCategory" placeholder="Enter new category" style="display: none;">
+                    <input type="text" 
+                           id="newCategoryName" 
+                           data-lang-key="enterNewCategory" 
+                           placeholder="Enter new category" 
+                           class="hidden"
+                           aria-label="New category name"
+                           title="Enter the name for the new work category">
                 </div>
                 <div class="work-input-group">
                     <label for="newWorkType" data-lang-key="workType">Work Type:</label>
-                    <input type="text" id="newWorkType" data-lang-key="workTypePlaceholder" placeholder="e.g., Pruning, Fertilizing">
+                    <input type="text" 
+                           id="newWorkType" 
+                           data-lang-key="workTypePlaceholder" 
+                           placeholder="e.g., Pruning, Fertilizing"
+                           aria-label="New work type"
+                           title="Enter the name for the new work type">
                 </div>
-                <button type="button" class="add-work-btn" onclick="laborSystem.addCustomWork()">
+                <button type="button" 
+                        class="add-work-btn" 
+                        onclick="laborSystem.addCustomWork()"
+                        aria-label="Add new work type"
+                        title="Add the new work type to the selected category">
                     <span data-lang-key="addWorkType">➕ Add Work Type</span>
                 </button>
             </div>
+            
+            <!-- Translation Helper -->
+            <div class="translation-helper">
+                <h4>💡 Translation Tip:</h4>
+                <p>
+                    <span data-lang-key="translationTip">New categories and tasks will use the same name in both languages initially. You can edit translations by clicking on the work tags below.</span>
+                </p>
+            </div>
+            
             <div class="work-tags" id="workTags"></div>
         </div>
 
@@ -81,18 +112,31 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="date" data-lang-key="date">Date:</label>
-                        <input type="date" id="date" required>
+                        <input type="date" 
+                               id="date" 
+                               required
+                               aria-label="Work date"
+                               title="Select the date when the work was performed">
                     </div>
                     <div class="form-group">
                         <label for="laborerName" data-lang-key="laborerName">Laborer Name:</label>
-                        <input type="text" id="laborerName" list="laborerList" required>
+                        <input type="text" 
+                               id="laborerName" 
+                               list="laborerList" 
+                               required
+                               aria-label="Laborer name"
+                               title="Enter the name of the laborer who performed the work"
+                               autocomplete="name">
                         <datalist id="laborerList">
                             <!-- Laborer names will be populated dynamically -->
                         </datalist>
                     </div>
                     <div class="form-group">
                         <label for="taskCategory" data-lang-key="taskCategory">Task Category:</label>
-                        <select id="taskCategory" required>
+                        <select id="taskCategory" 
+                                required
+                                aria-label="Select work category"
+                                title="Choose the category of work being performed">
                             <option value="" data-lang-key="selectCategory">Select Category</option>
                             <option value="Arecanut" data-lang-key="arecanut">Arecanut</option>
                             <option value="Rice" data-lang-key="rice">Rice</option>
@@ -106,13 +150,19 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="taskDetail" data-lang-key="taskDetail">Task Detail:</label>
-                        <select id="taskDetail" required>
+                        <select id="taskDetail" 
+                                required
+                                aria-label="Select specific task details"
+                                title="Choose the specific type of work within the selected category">
                             <option value="" data-lang-key="selectTask">Select Task</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="unitType" data-lang-key="unitType">Unit Type:</label>
-                        <select id="unitType" required>
+                        <select id="unitType" 
+                                required
+                                aria-label="Select unit of measurement"
+                                title="Choose how the work quantity is measured (day, hour, kg, etc.)">
                             <option value="" data-lang-key="selectUnit">Select Unit</option>
                             <option value="Day" data-lang-key="day">Day</option>
                             <option value="Hour" data-lang-key="hour">Hour</option>
@@ -124,23 +174,45 @@
                     </div>
                     <div class="form-group">
                         <label for="quantity" data-lang-key="quantity">Quantity:</label>
-                        <input type="number" id="quantity" step="0.01" required>
+                        <input type="number" 
+                               id="quantity" 
+                               step="0.01" 
+                               required
+                               aria-label="Work quantity"
+                               title="Enter the quantity of work performed"
+                               min="0">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="rate" data-lang-key="ratePerUnit">Rate per Unit (₹):</label>
-                        <input type="number" id="rate" step="0.01" required>
+                        <input type="number" 
+                               id="rate" 
+                               step="0.01" 
+                               required
+                               aria-label="Rate per unit in rupees"
+                               title="Enter the payment rate per unit of work"
+                               min="0">
                     </div>
                     <div class="form-group">
                         <label for="amountPaid" data-lang-key="amountPaidToday">Amount Paid Today (₹):</label>
-                        <input type="number" id="amountPaid" step="0.01" value="0">
+                        <input type="number" 
+                               id="amountPaid" 
+                               step="0.01" 
+                               value="0"
+                               aria-label="Amount paid today in rupees"
+                               title="Enter the amount paid to the laborer today"
+                               min="0">
                     </div>
                     <div class="form-group">
                         <label for="remarks" data-lang-key="remarks">Remarks:</label>
                         <div class="remarks-container">
-                            <select id="remarksDropdown" onchange="laborSystem.handleRemarksChange()">
+                            <label for="remarksDropdown" class="sr-only" data-lang-key="selectRemarks">Select Remarks</label>
+                            <select id="remarksDropdown" 
+                                    onchange="laborSystem.handleRemarksChange()"
+                                    aria-label="Select predefined remarks or choose custom"
+                                    title="Choose from predefined remarks or select custom to enter your own">
                                 <option value="" data-lang-key="selectRemarks">Select Remarks</option>
                                 <option value="Full payment" data-lang-key="fullPayment">Full payment</option>
                                 <option value="Partial payment" data-lang-key="partialPayment">Partial payment</option>
@@ -160,12 +232,21 @@
                                 <option value="Overtime payment" data-lang-key="overtimePayment">Overtime payment</option>
                                 <option value="custom" data-lang-key="customRemarks">Custom remarks...</option>
                             </select>
-                            <input type="text" id="remarks" data-lang-key="optionalNotes" placeholder="Optional notes" style="display: none;">
+                            <input type="text" 
+                                   id="remarks" 
+                                   data-lang-key="optionalNotes" 
+                                   placeholder="Optional notes" 
+                                   class="hidden"
+                                   aria-label="Custom remarks input"
+                                   title="Enter custom remarks">
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" data-lang-key="addEntry">Add Entry</button>
+                <button type="submit" 
+                        data-lang-key="addEntry"
+                        aria-label="Add work entry"
+                        title="Save the work entry to the records">Add Entry</button>
             </form>
         </div>
 

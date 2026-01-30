@@ -9,6 +9,43 @@ class LaborTrackingSystem {
             'Maintenance': ['Grass Picking', 'Tool Repair', 'Fence Repair', 'General Maintenance']
         };
         
+        // Translation mappings for categories and tasks
+        this.categoryTranslations = JSON.parse(localStorage.getItem('categoryTranslations')) || {
+            'Arecanut': { en: 'Arecanut', kn: 'ಅಡಿಕೆ' },
+            'Rice': { en: 'Rice', kn: 'ಅಕ್ಕಿ' },
+            'Ginger': { en: 'Ginger', kn: 'ಶುಂಠಿ' },
+            'House Work': { en: 'House Work', kn: 'ಮನೆ ಕೆಲಸ' },
+            'Maintenance': { en: 'Maintenance', kn: 'ನಿರ್ವಹಣೆ' }
+        };
+        
+        this.taskTranslations = JSON.parse(localStorage.getItem('taskTranslations')) || {
+            // Arecanut tasks
+            'Tree Cutting': { en: 'Tree Cutting', kn: 'ಮರ ಕತ್ತರಿಸುವುದು' },
+            'Husking': { en: 'Husking', kn: 'ಸಿಪ್ಪೆ ಸುಲಿಯುವುದು' },
+            'Spraying': { en: 'Spraying', kn: 'ಸಿಂಪಣೆ ಮಾಡುವುದು' },
+            'Harvesting': { en: 'Harvesting', kn: 'ಕೊಯ್ಲು' },
+            
+            // Rice tasks
+            'Planting': { en: 'Planting', kn: 'ನೆಟ್ಟಿಗೆ' },
+            'Weeding': { en: 'Weeding', kn: 'ಕಳೆ ತೆಗೆಯುವುದು' },
+            'Threshing': { en: 'Threshing', kn: 'ಬಡಿಯುವುದು' },
+            
+            // Ginger tasks
+            'Processing': { en: 'Processing', kn: 'ಸಂಸ್ಕರಣೆ' },
+            
+            // House Work tasks
+            'Cleaning': { en: 'Cleaning', kn: 'ಸ್ವಚ್ಛಗೊಳಿಸುವುದು' },
+            'Cooking': { en: 'Cooking', kn: 'ಅಡುಗೆ' },
+            'Maintenance': { en: 'Maintenance', kn: 'ನಿರ್ವಹಣೆ' },
+            'General Work': { en: 'General Work', kn: 'ಸಾಮಾನ್ಯ ಕೆಲಸ' },
+            
+            // Maintenance tasks
+            'Grass Picking': { en: 'Grass Picking', kn: 'ಹುಲ್ಲು ಕೀಳುವುದು' },
+            'Tool Repair': { en: 'Tool Repair', kn: 'ಉಪಕರಣ ದುರಸ್ತಿ' },
+            'Fence Repair': { en: 'Fence Repair', kn: 'ಬೇಲಿ ದುರಸ್ತಿ' },
+            'General Maintenance': { en: 'General Maintenance', kn: 'ಸಾಮಾನ್ಯ ನಿರ್ವಹಣೆ' }
+        };
+        
         this.currentLanguage = localStorage.getItem('currentLanguage') || 'en';
         this.translations = {
             en: {
@@ -93,6 +130,7 @@ class LaborTrackingSystem {
                 workCompleted: "Work completed",
                 halfDayWork: "Half day work",
                 overtimePayment: "Overtime payment",
+                translationTip: "New categories and tasks will use the same name in both languages initially. You can edit translations by clicking on the work tags below.",
                 selectRemarks: "Select Remarks",
                 fullPayment: "Full payment",
                 partialPayment: "Partial payment",
@@ -214,6 +252,7 @@ class LaborTrackingSystem {
                 workCompleted: "ಕೆಲಸ ಪೂರ್ಣಗೊಂಡಿದೆ",
                 halfDayWork: "ಅರ್ಧ ದಿನದ ಕೆಲಸ",
                 overtimePayment: "ಹೆಚ್ಚುವರಿ ಸಮಯದ ಪಾವತಿ",
+                translationTip: "ಹೊಸ ವರ್ಗಗಳು ಮತ್ತು ಕೆಲಸಗಳು ಆರಂಭದಲ್ಲಿ ಎರಡೂ ಭಾಷೆಗಳಲ್ಲಿ ಒಂದೇ ಹೆಸರನ್ನು ಬಳಸುತ್ತವೆ. ಕೆಳಗಿನ ಕೆಲಸದ ಟ್ಯಾಗ್‌ಗಳನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ ನೀವು ಅನುವಾದಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
                 selectRemarks: "ಟಿಪ್ಪಣಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
                 fullPayment: "ಪೂರ್ಣ ಪಾವತಿ",
                 partialPayment: "ಭಾಗಶಃ ಪಾವತಿ",
@@ -256,13 +295,15 @@ class LaborTrackingSystem {
         // Stagger animations for form groups
         const formGroups = document.querySelectorAll('.form-group');
         formGroups.forEach((group, index) => {
-            group.style.animationDelay = `${index * 0.1}s`;
+            const delayClass = `anim-delay-${Math.min(index + 1, 10)}`;
+            group.classList.add(delayClass);
         });
 
         // Animate summary cards
         const summaryCards = document.querySelectorAll('.summary-card');
         summaryCards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.2}s`;
+            const delayClass = `anim-delay-${Math.min((index + 1) * 2, 10)}`;
+            card.classList.add(delayClass);
         });
     }
 
@@ -287,11 +328,13 @@ class LaborTrackingSystem {
         document.getElementById('newCategory').addEventListener('change', (e) => {
             const newCategoryInput = document.getElementById('newCategoryName');
             if (e.target.value === 'new') {
-                newCategoryInput.style.display = 'block';
+                newCategoryInput.classList.remove('hidden');
+                newCategoryInput.classList.add('visible');
                 newCategoryInput.focus();
                 newCategoryInput.classList.add('slideInUp');
             } else {
-                newCategoryInput.style.display = 'none';
+                newCategoryInput.classList.add('hidden');
+                newCategoryInput.classList.remove('visible');
                 newCategoryInput.classList.remove('slideInUp');
             }
         });
@@ -334,6 +377,9 @@ class LaborTrackingSystem {
                 this.showError('Please enter a category name');
                 return;
             }
+            
+            // Add translation for new category (same name for both languages initially)
+            this.addCategoryTranslation(category, category, category);
         }
         
         if (!category || !workType) {
@@ -348,6 +394,10 @@ class LaborTrackingSystem {
         
         if (!this.taskDetails[category].includes(workType)) {
             this.taskDetails[category].push(workType);
+            
+            // Add translation for new task (same name for both languages initially)
+            this.addTaskTranslation(workType, workType, workType);
+            
             this.saveTaskDetails();
             this.renderWorkTags();
             this.updateTaskCategoryOptions();
@@ -360,7 +410,8 @@ class LaborTrackingSystem {
             // Clear inputs
             workTypeInput.value = '';
             newCategoryInput.value = '';
-            newCategoryInput.style.display = 'none';
+            newCategoryInput.classList.add('hidden');
+            newCategoryInput.classList.remove('visible');
             categorySelect.value = '';
             
             this.showSuccess(`Added "${workType}" to ${category} category!`);
@@ -393,10 +444,11 @@ class LaborTrackingSystem {
             works.forEach((work, index) => {
                 const tag = document.createElement('div');
                 tag.className = 'work-tag';
-                tag.style.animationDelay = `${index * 0.1}s`;
+                const delayClass = `anim-delay-${Math.min(index + 1, 10)}`;
+                tag.classList.add(delayClass);
                 tag.innerHTML = `
-                    <span class="category">${category}</span>
-                    <span>${work}</span>
+                    <span class="category">${this.getCategoryTranslation(category)}</span>
+                    <span>${this.getTaskTranslation(work)}</span>
                     <button class="remove-work" onclick="laborSystem.removeCustomWork('${category}', '${work}')" title="Remove">×</button>
                 `;
                 container.appendChild(tag);
@@ -406,16 +458,35 @@ class LaborTrackingSystem {
 
     updateTaskCategoryOptions() {
         const categorySelect = document.getElementById('taskCategory');
+        const newCategorySelect = document.getElementById('newCategory');
         const currentValue = categorySelect.value;
+        const currentNewValue = newCategorySelect.value;
         
-        categorySelect.innerHTML = '<option value="">Select Category</option>';
+        // Update main task category dropdown
+        categorySelect.innerHTML = `<option value="">${this.getTranslation('selectCategory')}</option>`;
         Object.keys(this.taskDetails).forEach(category => {
             const option = document.createElement('option');
             option.value = category;
-            option.textContent = category;
+            option.textContent = this.getCategoryTranslation(category);
             if (category === currentValue) option.selected = true;
             categorySelect.appendChild(option);
         });
+
+        // Update new category dropdown
+        newCategorySelect.innerHTML = `<option value="">${this.getTranslation('selectCategory')}</option>`;
+        Object.keys(this.taskDetails).forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = this.getCategoryTranslation(category);
+            if (category === currentNewValue) option.selected = true;
+            newCategorySelect.appendChild(option);
+        });
+        
+        // Add the "new category" option
+        const newOption = document.createElement('option');
+        newOption.value = 'new';
+        newOption.textContent = this.getTranslation('addNewCategory');
+        newCategorySelect.appendChild(newOption);
     }
 
     saveTaskDetails() {
@@ -438,24 +509,11 @@ class LaborTrackingSystem {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            z-index: 1000;
-            animation: slideInRight 0.5s ease-out;
-            background: ${type === 'success' ? '#28a745' : '#dc3545'};
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        `;
         
         document.body.appendChild(notification);
         
         setTimeout(() => {
-            notification.style.animation = 'slideInLeft 0.5s ease-out reverse';
+            notification.classList.add('fade-out');
             setTimeout(() => notification.remove(), 500);
         }, 3000);
     }
@@ -482,7 +540,7 @@ class LaborTrackingSystem {
                         .reduce((sum, record) => sum + record.amountPaid, 0);
                     
                     return `
-                        <div class="detail-item outstanding" style="animation-delay: ${index * 0.1}s">
+                        <div class="detail-item outstanding anim-delay-${Math.min(index + 1, 10)}">
                             <div class="laborer-info">
                                 <div class="laborer-name">${laborer}</div>
                                 <div class="laborer-details">
@@ -499,7 +557,7 @@ class LaborTrackingSystem {
         }
         
         modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('body-no-scroll');
     }
 
     showAdvancesDetails() {
@@ -526,7 +584,7 @@ class LaborTrackingSystem {
                     const advanceAmount = Math.abs(balance);
                     
                     return `
-                        <div class="detail-item advance" style="animation-delay: ${index * 0.1}s">
+                        <div class="detail-item advance anim-delay-${Math.min(index + 1, 10)}">
                             <div class="laborer-info">
                                 <div class="laborer-name">${laborer}</div>
                                 <div class="laborer-details">
@@ -543,7 +601,7 @@ class LaborTrackingSystem {
         }
         
         modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('body-no-scroll');
     }
 
     closeModal(modalId) {
@@ -556,7 +614,8 @@ class LaborTrackingSystem {
         setTimeout(() => {
             modal.classList.remove('show', 'modal-fade-out');
             modalContent.classList.remove('modal-content-slide-out');
-            document.body.style.overflow = 'auto';
+            document.body.classList.remove('body-no-scroll');
+            document.body.classList.add('body-scroll');
         }, 400);
     }
 
@@ -594,6 +653,18 @@ class LaborTrackingSystem {
 
         // Update select options
         this.updateSelectOptions();
+        
+        // Update category and task dropdowns
+        this.updateTaskCategoryOptions();
+        
+        // Update task details if a category is selected
+        const selectedCategory = document.getElementById('taskCategory').value;
+        if (selectedCategory) {
+            this.updateTaskDetails(selectedCategory);
+        }
+        
+        // Update work tags display
+        this.renderWorkTags();
         
         // Update table headers and content
         this.renderRecords();
@@ -654,17 +725,57 @@ class LaborTrackingSystem {
         return this.translations[this.currentLanguage][key] || key;
     }
 
+    getCategoryTranslation(category) {
+        if (this.categoryTranslations[category]) {
+            return this.categoryTranslations[category][this.currentLanguage];
+        }
+        return category;
+    }
+
+    getTaskTranslation(task) {
+        if (this.taskTranslations[task]) {
+            return this.taskTranslations[task][this.currentLanguage];
+        }
+        return task;
+    }
+
+    addCategoryTranslation(category, englishName, kannadaName) {
+        this.categoryTranslations[category] = {
+            en: englishName || category,
+            kn: kannadaName || category
+        };
+        this.saveCategoryTranslations();
+    }
+
+    addTaskTranslation(task, englishName, kannadaName) {
+        this.taskTranslations[task] = {
+            en: englishName || task,
+            kn: kannadaName || task
+        };
+        this.saveTaskTranslations();
+    }
+
+    saveCategoryTranslations() {
+        localStorage.setItem('categoryTranslations', JSON.stringify(this.categoryTranslations));
+    }
+
+    saveTaskTranslations() {
+        localStorage.setItem('taskTranslations', JSON.stringify(this.taskTranslations));
+    }
+
     handleRemarksChange() {
         const dropdown = document.getElementById('remarksDropdown');
         const textInput = document.getElementById('remarks');
         
         if (dropdown.value === 'custom') {
-            textInput.style.display = 'block';
+            textInput.classList.remove('hidden');
+            textInput.classList.add('visible');
             textInput.focus();
             textInput.value = '';
             textInput.placeholder = this.getTranslation('optionalNotes');
         } else {
-            textInput.style.display = 'none';
+            textInput.classList.add('hidden');
+            textInput.classList.remove('visible');
             textInput.value = dropdown.value;
         }
     }
@@ -679,24 +790,6 @@ class LaborTrackingSystem {
             return dropdown.value;
         } else {
             return textInput.value;
-        }
-    }
-
-    handleRemarksChange() {
-        const dropdown = document.getElementById('remarksDropdown');
-        const textInput = document.getElementById('remarks');
-        
-        if (dropdown.value === 'custom') {
-            textInput.style.display = 'block';
-            textInput.focus();
-            textInput.value = '';
-            textInput.placeholder = this.getTranslation('optionalNotes');
-        } else if (dropdown.value === '') {
-            textInput.style.display = 'none';
-            textInput.value = '';
-        } else {
-            textInput.style.display = 'none';
-            textInput.value = dropdown.value;
         }
     }
 
@@ -715,13 +808,13 @@ class LaborTrackingSystem {
 
     updateTaskDetails(category) {
         const taskDetailSelect = document.getElementById('taskDetail');
-        taskDetailSelect.innerHTML = '<option value="">Select Task</option>';
+        taskDetailSelect.innerHTML = `<option value="">${this.getTranslation('selectTask')}</option>`;
         
         if (category && this.taskDetails[category]) {
             this.taskDetails[category].forEach(task => {
                 const option = document.createElement('option');
                 option.value = task;
-                option.textContent = task;
+                option.textContent = this.getTaskTranslation(task);
                 taskDetailSelect.appendChild(option);
             });
         }
@@ -764,7 +857,8 @@ class LaborTrackingSystem {
             
             // Reset remarks dropdown and input
             document.getElementById('remarksDropdown').value = '';
-            document.getElementById('remarks').style.display = 'none';
+            document.getElementById('remarks').classList.add('hidden');
+            document.getElementById('remarks').classList.remove('visible');
             document.getElementById('remarks').value = '';
             
             submitButton.classList.remove('loading');
@@ -811,12 +905,13 @@ class LaborTrackingSystem {
             
             const row = document.createElement('tr');
             row.className = 'table-row-enter';
-            row.style.animationDelay = `${index * 0.05}s`;
+            const delayClass = `anim-delay-${Math.min(index + 1, 10)}`;
+            row.classList.add(delayClass);
             row.innerHTML = `
                 <td>${new Date(record.date).toLocaleDateString()}</td>
                 <td>${record.laborerName}</td>
-                <td>${record.taskCategory}</td>
-                <td>${record.taskDetail}</td>
+                <td>${this.getCategoryTranslation(record.taskCategory)}</td>
+                <td>${this.getTaskTranslation(record.taskDetail)}</td>
                 <td>${record.unitType}</td>
                 <td>${record.quantity}</td>
                 <td>₹${record.rate}</td>
@@ -835,9 +930,11 @@ class LaborTrackingSystem {
         const rows = document.querySelectorAll('#recordsBody tr');
         rows.forEach(row => {
             if (!laborerName || row.cells[1].textContent === laborerName) {
-                row.style.display = '';
+                row.classList.remove('table-row-hidden');
+                row.classList.add('table-row-visible');
             } else {
-                row.style.display = 'none';
+                row.classList.add('table-row-hidden');
+                row.classList.remove('table-row-visible');
             }
         });
     }
@@ -921,7 +1018,8 @@ class LaborTrackingSystem {
             
             const card = document.createElement('div');
             card.className = 'laborer-card';
-            card.style.animationDelay = `${index * 0.2}s`;
+            const delayClass = `anim-delay-${Math.min((index + 1) * 2, 10)}`;
+            card.classList.add(delayClass);
             card.innerHTML = `
                 <h3>${laborer}</h3>
                 <div class="laborer-stats">
